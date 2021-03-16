@@ -1,0 +1,92 @@
+class A;
+  rand logic [11:0] addr;
+  
+  constraint a_r {addr>100;
+                   addr<200;
+                    addr%2==0;};
+endclass
+
+module m;
+  initial begin
+    A a=new();
+    
+    repeat(5)
+      begin
+      a.randomize();
+      $display("addr=%0d",a.addr);
+      end
+    
+  end
+  
+endmodule
+
+OUTPUT:
+addr=154
+addr=186
+addr=114
+addr=180
+addr=128
+
+------------------------------------------------------------------
+
+class unique_elements;
+  rand bit [3:0] var_1,var_2;
+  
+  constraint varis_c {unique {var_1};}
+  
+  function void display();
+    $display("var_1 = %p",var_1);
+    $display("var_2 = %p",var_2);
+  endfunction
+endclass
+
+program unique_elements_randomization;
+  unique_elements pkt;
+
+  initial begin
+    pkt = new();
+    repeat(5)
+      begin
+    pkt.randomize();
+    pkt.display(); 
+      end
+  end
+  
+endprogram 
+
+/////////////////////////////////////////////////////////////////
+
+class A;
+  rand bit [7:0]ver_1,ver_2;
+  
+  constraint ver_1_rang {ver_1<50;}
+  
+  constraint ver_2_rang {unique{ver_2};}
+                    
+endclass
+
+module m;
+  initial begin
+    A a=new();
+    
+    repeat(2)
+      begin
+      a.randomize();
+        $display("ver_1=%p",a.ver_1);
+        $display("ver_2=%p\n",a.ver_2);
+      end
+    
+  end
+  
+endmodule
+
+output :
+
+ver_1= 18
+ver_2=119
+
+ver_1= 30
+ver_2=224
+
+/////////////////////////////////////////////////////////////////////////
+
